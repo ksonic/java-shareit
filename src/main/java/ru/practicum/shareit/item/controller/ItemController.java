@@ -26,7 +26,7 @@ import java.util.List;
 public class ItemController {
     private final ItemService service;
     private final ItemMapper mapper;
-    private static final String userIdHeader="X-Sharer-User-Id";
+    private static final String userIdHeader = "X-Sharer-User-Id";
 
     @PostMapping
     public ItemResponse create(@Valid @RequestBody ItemCreateRequest request, @RequestHeader(userIdHeader) Long userId) {
