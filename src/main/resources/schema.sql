@@ -3,6 +3,7 @@ CREATE TABLE IF NOT EXISTS users (
   name varchar,
   email varchar
 );
+
 CREATE TABLE IF NOT EXISTS items (
   id long auto_increment PRIMARY KEY,
   name varchar,
@@ -10,5 +11,3 @@ CREATE TABLE IF NOT EXISTS items (
   available BOOLEAN DEFAULT TRUE,
   owner long
 );
-
-commit;

@@ -1,6 +1,6 @@
 package ru.practicum.shareit.booking.dto;
 
-import ru.practicum.shareit.booking.Status;
+import ru.practicum.shareit.booking.BookingStatus;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -13,5 +13,5 @@ public class BookingDto {
     private String end;
     private String item;
     private String booker;
-    private Status status;
+    private BookingStatus status;
 }

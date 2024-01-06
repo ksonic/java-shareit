@@ -20,16 +20,16 @@ import ru.practicum.shareit.item.service.ItemService;
 import javax.validation.Valid;
 import java.util.List;
 
-
 @RestController
 @RequestMapping(path = "/items")
 @RequiredArgsConstructor
 public class ItemController {
     private final ItemService service;
     private final ItemMapper mapper;
+    private static final String userIdHeader="X-Sharer-User-Id";
 
     @PostMapping
-    public ItemResponse create(@Valid @RequestBody ItemCreateRequest request, @RequestHeader("X-Sharer-User-Id") Long userId) {
+    public ItemResponse create(@Valid @RequestBody ItemCreateRequest request, @RequestHeader(userIdHeader) Long userId) {
         Item item = mapper.toItem(request, userId);
         Item modified = service.create(item);
         return mapper.toResponse(modified);
@@ -41,14 +41,14 @@ public class ItemController {
     }
 
     @GetMapping
-    public List<Item> getAll(@RequestHeader("X-Sharer-User-Id") long userId) {
+    public List<Item> getAll(@RequestHeader(userIdHeader) long userId) {
         return service.getItems(userId);
     }
 
     @PatchMapping("/{itemId}")
     public ItemResponse update(@Valid @RequestBody ItemUpdateRequest request,
                                @Valid @PathVariable Long itemId,
-                               @RequestHeader("X-Sharer-User-Id") Long userId) {
+                               @RequestHeader(userIdHeader) Long userId) {
         Item item = mapper.toItem(request, itemId, userId);
         Item modified = service.update(item);
         return mapper.toResponse(modified);

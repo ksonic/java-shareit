@@ -1,16 +1,16 @@
 package ru.practicum.shareit.booking;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-/**
- * TODO Sprint add-bookings.
- */
 @Component
-@Data
+@Getter
+@Setter
 public class Booking {
     @Id
     @GeneratedValue
@@ -19,5 +19,5 @@ public class Booking {
     private String end;
     private String item;
     private String booker;
-    private Status status;
+    private BookingStatus status;
 }

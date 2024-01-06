@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class ItemUpdateRequest {
-    Boolean available;
+    private Boolean available;
     private long id;
     private String name;
     private String description;

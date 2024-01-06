@@ -14,7 +14,7 @@ public interface UserStorage {
 
     User getById(Long id);
 
-    Boolean isEmailExisted(String userEmail);
+    boolean emailExists(String userEmail);
 
     Boolean containsUser(Long id);
 

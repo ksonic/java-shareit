@@ -1,7 +1,6 @@
 package ru.practicum.shareit.item.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.storage.ItemStorage;
@@ -15,7 +14,7 @@ public class ItemServiceImpl implements ItemService {
     private final ItemStorage storage;
 
     @Autowired
-    public ItemServiceImpl(@Qualifier("itemStorageImpl") ItemStorage itemStorage) {
+    public ItemServiceImpl(ItemStorage itemStorage) {
         this.storage = itemStorage;
     }
 

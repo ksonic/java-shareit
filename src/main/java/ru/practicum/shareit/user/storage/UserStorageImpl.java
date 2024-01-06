@@ -2,7 +2,6 @@ package ru.practicum.shareit.user.storage;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -19,7 +18,6 @@ import java.util.List;
 
 @Slf4j
 @Component
-@Qualifier("userStorageImpl")
 @RequiredArgsConstructor
 public class UserStorageImpl implements UserStorage {
     private final JdbcTemplate jdbcTemplate;
@@ -80,7 +78,7 @@ public class UserStorageImpl implements UserStorage {
     }
 
     @Override
-    public Boolean isEmailExisted(String userEmail) {
+    public boolean emailExists(String userEmail) {
         SqlRowSet userRows = jdbcTemplate.queryForRowSet("select * from users where email = ?", userEmail);
         if (userRows.next()) {
             log.info("User found: {} {}", userRows.getString("id"), userRows.getString("email"));

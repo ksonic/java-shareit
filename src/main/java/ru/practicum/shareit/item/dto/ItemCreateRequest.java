@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 public class ItemCreateRequest {
     @NotNull
-    Boolean available;
+    private Boolean available;
     private long id;
     @NotBlank(message = "Name shouldn't be empty")
     private String name;
