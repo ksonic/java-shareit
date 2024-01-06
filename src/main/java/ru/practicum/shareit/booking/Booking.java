@@ -1,9 +1,7 @@
 package ru.practicum.shareit.booking;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.stereotype.Component;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
