@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-@Component
 @Getter
 @Setter
 public class Booking {
