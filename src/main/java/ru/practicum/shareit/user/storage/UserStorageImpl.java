@@ -7,7 +7,6 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
-import ru.practicum.shareit.user.exception.DataNotFoundException;
 import ru.practicum.shareit.user.model.User;
 
 import java.sql.PreparedStatement;
@@ -73,6 +72,7 @@ public class UserStorageImpl implements UserStorage {
         String sqlQuery = "DELETE FROM users WHERE id = ?";
         jdbcTemplate.update(sqlQuery, id);
     }
+
     @Override
     public boolean emailExists(String userEmail) {
         SqlRowSet userRows = jdbcTemplate.queryForRowSet("select * from users where email = ?", userEmail);
