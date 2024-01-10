@@ -8,7 +8,6 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 import ru.practicum.shareit.item.model.Item;
-import ru.practicum.shareit.user.exception.DataNotFoundException;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -22,16 +21,6 @@ import java.util.List;
 public class ItemStorageImpl implements ItemStorage {
     private final JdbcTemplate jdbcTemplate;
 
-    private static Item buildItem(ResultSet rs, int rowNum) throws SQLException {
-        return Item.builder()
-                .id(rs.getLong("id"))
-                .name(rs.getString("name"))
-                .description(rs.getString("description"))
-                .available(rs.getBoolean("available"))
-                .owner(rs.getLong("owner"))
-                .build();
-    }
-
     @Override
     public Item create(Item item) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -44,7 +33,8 @@ public class ItemStorageImpl implements ItemStorage {
             return ps;
         }, keyHolder);
         Long id = keyHolder.getKey().longValue();
-        return getById(id);
+        item.setId(id);
+        return item;
     }
 
     @Override
@@ -75,14 +65,13 @@ public class ItemStorageImpl implements ItemStorage {
     @Override
     public Item getById(Long id) {
         String sqlQuery = "SELECT * FROM items u WHERE u.id = ?";
-        return jdbcTemplate.query(sqlQuery, ItemStorageImpl::buildItem, id).stream().findAny()
-                .orElseThrow(() -> new DataNotFoundException(String.format("items with id %s now found", id)));
+        return jdbcTemplate.queryForObject(sqlQuery, ItemStorageImpl::buildItem, id);
     }
 
     @Override
     public List<Item> getAll(Long userId) {
         String sqlQuery = "SELECT * FROM items where owner=?";
-        return new ArrayList<>(jdbcTemplate.query(sqlQuery, ItemStorageImpl::buildItem, userId));
+        return jdbcTemplate.query(sqlQuery, ItemStorageImpl::buildItem, userId);
     }
 
     @Override
@@ -91,7 +80,7 @@ public class ItemStorageImpl implements ItemStorage {
                 "where available=true " +
                 "and (name iLike CONCAT('%',?,'%') " +
                 "or description iLike CONCAT('%',?,'%'))";
-        return new ArrayList<>(jdbcTemplate.query(sqlQuery, ItemStorageImpl::buildItem, query, query));
+        return jdbcTemplate.query(sqlQuery, ItemStorageImpl::buildItem, query, query);
     }
 
     @Override
@@ -121,6 +110,16 @@ public class ItemStorageImpl implements ItemStorage {
             return false;
         }
         return true;
+    }
+
+    private static Item buildItem(ResultSet rs, int rowNum) throws SQLException {
+        return Item.builder()
+                .id(rs.getLong("id"))
+                .name(rs.getString("name"))
+                .description(rs.getString("description"))
+                .available(rs.getBoolean("available"))
+                .owner(rs.getLong("owner"))
+                .build();
     }
 
 }

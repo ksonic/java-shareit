@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.practicum.shareit.user.dto.UserCreateRequest;
+import ru.practicum.shareit.user.dto.CreateUserRequest;
+import ru.practicum.shareit.user.dto.UpdateUserRequest;
 import ru.practicum.shareit.user.dto.UserResponse;
-import ru.practicum.shareit.user.dto.UserUpdateRequest;
 import ru.practicum.shareit.user.mapper.UserMapper;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.service.UserService;
@@ -27,7 +27,7 @@ public class UserController {
     private final UserMapper mapper;
 
     @PostMapping
-    public UserResponse create(@Valid @RequestBody UserCreateRequest request) {
+    public UserResponse create(@Valid @RequestBody CreateUserRequest request) {
         User user = mapper.toUser(request);
         User modified = service.create(user);
         return mapper.toResponse(modified);
@@ -44,7 +44,7 @@ public class UserController {
     }
 
     @PatchMapping("/{id}")
-    public UserResponse update(@Valid @RequestBody UserUpdateRequest request, @Valid @PathVariable Long id) {
+    public UserResponse update(@Valid @RequestBody UpdateUserRequest request, @Valid @PathVariable Long id) {
         User user = mapper.toUser(request, id);
         User modified = service.update(user);
         return mapper.toResponse(modified);

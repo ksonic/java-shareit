@@ -22,14 +22,6 @@ import java.util.List;
 public class UserStorageImpl implements UserStorage {
     private final JdbcTemplate jdbcTemplate;
 
-    private static User buildUser(ResultSet rs, int rowNum) throws SQLException {
-        return User.builder()
-                .id(rs.getLong("id"))
-                .email(rs.getString("email"))
-                .name(rs.getString("name"))
-                .build();
-    }
-
     @Override
     public List<User> getAll() {
         String sqlQuery = "SELECT * FROM users GROUP BY id";
@@ -53,8 +45,7 @@ public class UserStorageImpl implements UserStorage {
     @Override
     public User getById(Long id) {
         String sqlQuery = "SELECT * FROM users u WHERE u.id = ?";
-        return jdbcTemplate.query(sqlQuery, UserStorageImpl::buildUser, id).stream().findAny()
-                .orElseThrow(() -> new DataNotFoundException(String.format("user with id %s now found", id)));
+        return jdbcTemplate.queryForObject(sqlQuery, UserStorageImpl::buildUser, id);
     }
 
     @Override
@@ -77,6 +68,11 @@ public class UserStorageImpl implements UserStorage {
         return getById(user.getId());
     }
 
+    @Override
+    public void delete(Long id) {
+        String sqlQuery = "DELETE FROM users WHERE id = ?";
+        jdbcTemplate.update(sqlQuery, id);
+    }
     @Override
     public boolean emailExists(String userEmail) {
         SqlRowSet userRows = jdbcTemplate.queryForRowSet("select * from users where email = ?", userEmail);
@@ -101,9 +97,11 @@ public class UserStorageImpl implements UserStorage {
         return true;
     }
 
-    @Override
-    public void delete(Long id) {
-        String sqlQuery = "DELETE FROM users WHERE id = ?";
-        jdbcTemplate.update(sqlQuery, id);
+    private static User buildUser(ResultSet rs, int rowNum) throws SQLException {
+        return User.builder()
+                .id(rs.getLong("id"))
+                .email(rs.getString("email"))
+                .name(rs.getString("name"))
+                .build();
     }
 }
